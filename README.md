@@ -1,14 +1,14 @@
-# Nome do projeto
+# Sistema de Moeda Estudantil
 Escreva um ou dois parágrafo resumindo o objetivo do seu projeto.
 
 ## Integrantes
-* Nome completo do aluno 1
-* Nome completo do aluno 2
-* Nome completo do aluno 3
-* Nome completo do aluno 4
+* André Almeida
+* Rafael Barra
+* Vinicius Lima
+* Vitor de Figueiredo
 
 ## Orientadores
-* Nome completo do professor 1
+* Cleiton Tavares
 * Nome completo do professor 2
 
 ## Instruções de utilização
