@@ -1,0 +1,90 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+' Classes principais
+class Usuario {
+  - id: String
+  - nome: String
+  - email: String
+  - senha: String
+  + autenticar(): boolean
+}
+
+class Aluno {
+  - cpf: String
+  - rg: String
+  - endereco: String
+  - curso: String
+  - instituicao: Instituicao
+  - saldo: int
+  + consultarExtrato(): List<Transacao>
+  + trocarMoeda(v: Vantagem): Cupom
+}
+
+class Professor {
+  - cpf: String
+  - departamento: String
+  - instituicao: Instituicao
+  - saldo: int
+  + distribuirMoeda(aluno: Aluno, quantidade: int, mensagem: String): Transacao
+}
+
+class Empresa {
+  - cnpj: String
+  - nomeFantasia: String
+  + cadastrarVantagem(v: Vantagem): void
+}
+
+class Instituicao {
+  - nome: String
+  - cnpj: String
+  - endereco: String
+}
+
+class Vantagem {
+  - id: String
+  - titulo: String
+  - descricao: String
+  - custo: int
+  - foto: String
+  - empresa: Empresa
+}
+
+class Moeda {
+  - id: String
+  - valor: int = 1
+}
+
+class Transacao {
+  - id: String
+  - data: DateTime
+  - tipo: String
+  - quantidade: int
+  - remetente: Usuario
+  - destinatario: Usuario
+  - mensagem: String
+}
+
+class Cupom {
+  - codigo: String
+  - vantagem: Vantagem
+  - aluno: Aluno
+  - dataGeracao: DateTime
+}
+
+' Herança
+Usuario <|-- Aluno
+Usuario <|-- Professor
+Usuario <|-- Empresa
+
+' Relacionamentos
+Aluno --> Instituicao
+Professor --> Instituicao
+Empresa --> Vantagem
+Aluno --> Transacao : "recebe"
+Professor --> Transacao : "envia"
+Transacao --> Usuario : remetente/destinatario
+Aluno --> Cupom
+Cupom --> Vantagem
+
+@enduml
