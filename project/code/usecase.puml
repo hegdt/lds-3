@@ -1,0 +1,66 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam usecase {
+  ArrowColor DarkBlue
+  ActorBorderColor black
+  ActorFontStyle bold
+  UsecaseBorderColor Navy
+  UsecaseFontColor DarkBlue
+}
+
+actor Usuario
+Usuario <|-- Aluno
+Usuario <|-- Professor
+Usuario <|-- Empresa
+actor Sistema
+
+package "Sistema de Moeda Estudantil" {
+  
+  usecase "Fazer login" as UC_Login
+  usecase "Cadastrar-se como aluno" as UC_CadAluno
+  usecase "Visualizar extrato de moedas" as UC_Extrato
+  usecase "Trocar moedas por vantagens" as UC_TrocaMoedas
+  usecase "Receber notificação por email" as UC_NotifAluno
+  usecase "Receber cupom por email com código" as UC_EmailCupom
+  usecase "Distribuir moedas aos alunos" as UC_DistribuirMoedas
+  usecase "Visualizar saldo e transações" as UC_SaldoProfessor
+  usecase "Cadastrar empresa parceira" as UC_CadEmpresa
+  usecase "Cadastrar vantagens" as UC_CadVantagem
+  usecase "Receber email de confirmação com código" as UC_ConfirmacaoParceiro
+  usecase "Selecionar vantagem" as UC_SelecionarVantagem
+  usecase "Receber moedas com mensagem" as UC_ReceberMoedas
+}
+
+' Herança de ator genérico
+Usuario --> UC_Login
+Aluno --> UC_CadAluno
+Aluno --> UC_Extrato
+Aluno --> UC_TrocaMoedas
+Aluno --> UC_ReceberMoedas
+Aluno --> UC_NotifAluno
+Aluno --> UC_EmailCupom
+Aluno --> UC_SelecionarVantagem
+
+Professor --> UC_DistribuirMoedas
+Professor --> UC_SaldoProfessor
+
+Empresa --> UC_CadEmpresa
+Empresa --> UC_CadVantagem
+Empresa --> UC_ConfirmacaoParceiro
+
+Sistema --> UC_NotifAluno
+Sistema --> UC_EmailCupom
+Sistema --> UC_ConfirmacaoParceiro
+
+' Relacionamentos <<include>> e <<extend>>
+UC_TrocaMoedas --> UC_SelecionarVantagem : <<include>>
+UC_TrocaMoedas --> UC_EmailCupom : <<include>>
+
+UC_DistribuirMoedas --> UC_ReceberMoedas : <<include>>
+UC_ReceberMoedas --> UC_NotifAluno : <<include>>
+
+UC_CadVantagem --> UC_CadEmpresa : <<extend>>
+UC_ConfirmacaoParceiro --> UC_EmailCupom : <<include>>
+
+@enduml
