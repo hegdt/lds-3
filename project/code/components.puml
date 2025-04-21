@@ -1,0 +1,66 @@
+@startuml
+skinparam componentStyle rectangle
+
+package "View" {
+  [LoginPage]
+  [DashboardAluno]
+  [DashboardProfessor]
+  [DashboardEmpresa]
+  [ExtratoView]
+  [TrocaMoedaView]
+  [CadastroAlunoView]
+  [CadastroEmpresaView]
+}
+
+package "Controller" {
+  [AuthController]
+  [AlunoController]
+  [ProfessorController]
+  [EmpresaController]
+  [VantagemController]
+  [TransacaoController]
+}
+
+package "Model" {
+  [Usuario]
+  [Aluno]
+  [Professor]
+  [Empresa]
+  [Instituicao]
+  [Vantagem]
+  [Moeda]
+  [Transacao]
+  [Cupom]
+}
+
+[LoginPage] --> [AuthController]
+[DashboardAluno] --> [AlunoController]
+[DashboardProfessor] --> [ProfessorController]
+[DashboardEmpresa] --> [EmpresaController]
+[ExtratoView] --> [TransacaoController]
+[TrocaMoedaView] --> [VantagemController]
+[CadastroAlunoView] --> [AlunoController]
+[CadastroEmpresaView] --> [EmpresaController]
+
+[AuthController] --> [Usuario]
+[AlunoController] --> [Aluno]
+[ProfessorController] --> [Professor]
+[EmpresaController] --> [Empresa]
+[VantagemController] --> [Vantagem]
+[TransacaoController] --> [Transacao]
+[TrocaMoedaView] --> [Cupom]
+
+[Usuario] <|-- [Aluno]
+[Usuario] <|-- [Professor]
+[Usuario] <|-- [Empresa]
+
+[Aluno] --> [Instituicao]
+[Professor] --> [Instituicao]
+[Empresa] --> [Vantagem]
+[Aluno] --> [Transacao]
+[Professor] --> [Transacao]
+[Transacao] --> [Usuario]
+[Cupom] --> [Vantagem]
+[Aluno] --> [Cupom]
+
+@enduml
