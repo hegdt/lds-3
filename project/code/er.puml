@@ -1,0 +1,94 @@
+@startuml
+' Usar estilo de diagrama ER
+hide circle
+skinparam linetype ortho
+
+entity Usuario {
+  * id : String <<PK>>
+  --
+  nome : String
+  email : String
+  senha : String
+}
+
+entity Aluno {
+  * id : String <<PK>>
+  --
+  cpf : String
+  rg : String
+  endereco : String
+  curso : String
+  instituicao_id : UUID <<FK>>
+  saldo : int
+}
+
+entity Professor {
+  * id : String <<PK>>
+  --
+  cpf : String
+  departamento : String
+  instituicao_id : UUID <<FK>>
+  saldo : int
+}
+
+entity Empresa {
+  * id : String <<PK>>
+  --
+  cnpj : String
+  nome_fantasia : String
+}
+
+entity Instituicao {
+  * id : String <<PK>>
+  --
+  nome : String
+  cnpj : String
+  endereco : String
+}
+
+entity Vantagem {
+  * id : String <<PK>>
+  --
+  titulo : String
+  descricao : String
+  custo : int
+  foto : String
+  empresa_id : UUID <<FK>>
+}
+
+entity Transacao {
+  * id : String <<PK>>
+  --
+  data : DateTime
+  tipo : String
+  quantidade : int
+  remetente_id : UUID <<FK>>
+  destinatario_id : UUID <<FK>>
+  mensagem : String
+}
+
+entity Cupom {
+  * id : String <<PK>>
+  --
+  codigo : String
+  vantagem_id : UUID <<FK>>
+  aluno_id : UUID <<FK>>
+  data_geracao : DateTime
+}
+
+' Relacionamentos principais
+Usuario ||--o{ Aluno : "é"
+Usuario ||--o{ Professor : "é"
+Usuario ||--o{ Empresa : "é"
+
+Instituicao ||--o{ Aluno : "possui"
+Instituicao ||--o{ Professor : "possui"
+
+Empresa ||--o{ Vantagem : "oferece"
+
+Aluno ||--o{ Cupom : "resgata"
+Vantagem ||--o{ Cupom : "associada a"
+
+Usuario ||--o{ Transacao : "remetente"
+Usuario ||--o{ Transacao : "destinatario"
+@enduml
