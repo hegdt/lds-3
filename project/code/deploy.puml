@@ -1,0 +1,28 @@
+@startuml
+skinparam node {
+  BackgroundColor #EEEEEE
+  BorderColor Black
+}
+
+actor Usuario
+
+node "Cliente (Navegador Web)" {
+  [Interface Web (View)]
+}
+
+node "Servidor de Aplicação" {
+  [Controladores (Controllers)]
+  [Serviços (Services)]
+}
+
+node "Servidor de Banco de Dados" {
+  [Banco de Dados]
+}
+
+Usuario --> [Interface Web (View)] : Usa
+
+[Interface Web (View)] --> [Controladores (Controllers)] : HTTP Request
+[Controladores (Controllers)] --> [Serviços (Services)] : Chamada de métodos
+[Serviços (Services)] --> [Banco de Dados] : Consultas/Atualizações
+
+@enduml
