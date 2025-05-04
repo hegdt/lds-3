@@ -12,5 +12,3 @@ O sistema inclui cadastro e login de usuários, envio e recebimento de moedas co
 ## Orientadores
 * Cleiton Tavares
 
-## Instruções de utilização
-Assim que a primeira versão do sistema estiver disponível, deverá complementar com as instruções de utilização. Descreva como instalar eventuais dependências e como executar a aplicação.
