@@ -29,17 +29,12 @@ public class AlunoService {
     }
 
     public Aluno salvar(Aluno aluno) {
-        // Buscar o Usuario existente
-        UUID usuarioId = aluno.getUsuario().getId();
-        Usuario usuario = usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado com ID: " + usuarioId));
+        Usuario usuario = usuarioRepository.findById(aluno.getUsuario().getId())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
 
-        // Buscar a Instituicao existente
-        UUID instituicaoId = aluno.getInstituicao().getId();
-        Instituicao instituicao = instituicaoRepository.findById(instituicaoId)
-                .orElseThrow(() -> new RuntimeException("Instituição não encontrada com ID: " + instituicaoId));
+        Instituicao instituicao = instituicaoRepository.findById(aluno.getInstituicao().getId())
+                .orElseThrow(() -> new RuntimeException("Instituição não encontrada."));
 
-        // Associar os objetos existentes ao Aluno
         aluno.setUsuario(usuario);
         aluno.setInstituicao(instituicao);
 
@@ -55,7 +50,15 @@ public class AlunoService {
     }
 
     public Aluno atualizar(UUID id, Aluno aluno) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'atualizar'");
+        Aluno existente = buscarPorId(id);
+        if (existente == null) throw new RuntimeException("Aluno não encontrado.");
+
+        existente.setCpf(aluno.getCpf());
+        existente.setRg(aluno.getRg());
+        existente.setEndereco(aluno.getEndereco());
+        existente.setCurso(aluno.getCurso());
+        existente.setSaldo(aluno.getSaldo());
+
+        return alunoRepository.save(existente);
     }
 }

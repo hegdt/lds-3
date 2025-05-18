@@ -2,8 +2,8 @@ package com.example.lds3.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.util.UUID;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "aluno")
@@ -24,8 +24,9 @@ public class Aluno {
     @Column(nullable = false)
     private String curso;
 
-    @ManyToOne(fetch = FetchType.LAZY) 
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "instituicao_id", nullable = false)
+    @JsonIgnoreProperties({"alunos"})
     private Instituicao instituicao;
 
     @Column(nullable = false)
@@ -34,5 +35,6 @@ public class Aluno {
     @OneToOne
     @MapsId
     @JoinColumn(name = "id")
+    @JsonIgnoreProperties({"senha"})
     private Usuario usuario;
 }

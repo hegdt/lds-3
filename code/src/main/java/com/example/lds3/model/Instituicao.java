@@ -2,12 +2,13 @@ package com.example.lds3.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.util.UUID;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "instituicao")
 @Data
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Instituicao {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
