@@ -19,10 +19,10 @@ node "Servidor de Banco de Dados" {
   database "Banco de Dados" as DB
 }
 
-Usuario --> WebUI : Usa a interface
+Usuario ..> WebUI : Usa a interface
 
 WebUI ..> AppController : envia requisições
-AppController ..> AppService : chama métodos
+AppController --> AppService : chama métodos
 AppService ..> DB : realiza operações
 
 @enduml

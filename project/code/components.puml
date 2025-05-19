@@ -1,31 +1,28 @@
 @startuml
-skinparam componentStyle rectangle
 
-package "View" {
-  [LoginPage]
-  [DashboardAluno]
-  [DashboardProfessor]
-  [DashboardEmpresa]
-  [ExtratoView]
-  [TrocaMoedaView]
-  [CadastroAlunoView]
-}
-
-package "Controller" {
+package "OperacoesUsuario" {
+  [CadastroView]
+  [LoginView]
+  [DashboardAlunoView]
+  [DashboardProfessorView]
+  [DashboardEmpresaView]
   [AuthController]
+  [UsuarioController]
   [AlunoController]
   [ProfessorController]
   [EmpresaController]
-  [VantagemController]
-  [TransacaoController]
-}
-
-package "Model" {
   [Usuario]
   [Aluno]
   [Professor]
   [Empresa]
   [Instituicao]
+}
+
+package "OperacoesFinanceiras" {
+  [ExtratoView]
+  [TrocaMoedaView]
+  [VantagemController]
+  [TransacaoController]
   [Vantagem]
   [Moeda]
   [Transacao]
@@ -33,16 +30,17 @@ package "Model" {
 }
 
 ' Conexões View -> Controller
-[LoginPage] ..> [AuthController]
-[DashboardAluno] ..> [AlunoController]
-[DashboardProfessor] ..> [ProfessorController]
-[DashboardEmpresa] ..> [EmpresaController]
+[LoginView] ..> [AuthController]
+[DashboardAlunoView] ..> [AlunoController]
+[DashboardProfessorView] ..> [ProfessorController]
+[DashboardEmpresaView] ..> [EmpresaController]
 [ExtratoView] ..> [TransacaoController]
 [TrocaMoedaView] ..> [VantagemController]
-[CadastroAlunoView] ..> [AlunoController]
+[CadastroView] ..> [UsuarioController]
 
 ' Conexões Controller -> Model
 [AuthController] ..> [Usuario]
+[UsuarioController] ..> [Usuario]
 [AlunoController] ..> [Aluno]
 [AlunoController] ..> [Instituicao]
 [AlunoController] ..> [Cupom]
