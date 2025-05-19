@@ -24,7 +24,6 @@ package "OperacoesFinanceiras" {
   [VantagemController]
   [TransacaoController]
   [Vantagem]
-  [Moeda]
   [Transacao]
   [Cupom]
 }
