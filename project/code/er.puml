@@ -1,5 +1,4 @@
 @startuml
-' Usar estilo de diagrama ER
 hide circle
 skinparam linetype ortho
 
@@ -81,13 +80,12 @@ Usuario ||--o{ Aluno : "é"
 Usuario ||--o{ Professor : "é"
 Usuario ||--o{ Empresa : "é"
 
-Instituicao ||--o{ Aluno : "possui"
-Instituicao ||--o{ Professor : "possui"
+Instituicao ||--o{ Aluno : "pertence"
+Instituicao ||--o{ Professor : "pertence"
 
 Empresa ||--o{ Vantagem : "oferece"
-
+Vantagem ||--o{ Cupom : "relaciona"
 Aluno ||--o{ Cupom : "resgata"
-Vantagem ||--o{ Cupom : "associada a"
 
 Usuario ||--o{ Transacao : "remetente"
 Usuario ||--o{ Transacao : "destinatario"

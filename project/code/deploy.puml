@@ -7,22 +7,22 @@ skinparam node {
 actor Usuario
 
 node "Cliente (Navegador Web)" {
-  [Interface Web (View)]
+  component "Interface Web" as WebUI
 }
 
 node "Servidor de Aplicação" {
-  [Controladores (Controllers)]
-  [Serviços (Services)]
+  component "Controllers" as AppController
+  component "Services" as AppService
 }
 
 node "Servidor de Banco de Dados" {
-  [Banco de Dados]
+  database "Banco de Dados" as DB
 }
 
-Usuario --> [Interface Web (View)] : Usa
+Usuario --> WebUI : Usa a interface
 
-[Interface Web (View)] --> [Controladores (Controllers)] : HTTP Request
-[Controladores (Controllers)] --> [Serviços (Services)] : Chamada de métodos
-[Serviços (Services)] --> [Banco de Dados] : Consultas/Atualizações
+WebUI ..> AppController : envia requisições
+AppController ..> AppService : chama métodos
+AppService ..> DB : realiza operações
 
 @enduml

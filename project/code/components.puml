@@ -9,7 +9,6 @@ package "View" {
   [ExtratoView]
   [TrocaMoedaView]
   [CadastroAlunoView]
-  [CadastroEmpresaView]
 }
 
 package "Controller" {
@@ -33,34 +32,31 @@ package "Model" {
   [Cupom]
 }
 
-[LoginPage] --> [AuthController]
-[DashboardAluno] --> [AlunoController]
-[DashboardProfessor] --> [ProfessorController]
-[DashboardEmpresa] --> [EmpresaController]
-[ExtratoView] --> [TransacaoController]
-[TrocaMoedaView] --> [VantagemController]
-[CadastroAlunoView] --> [AlunoController]
-[CadastroEmpresaView] --> [EmpresaController]
+' Conexões View -> Controller
+[LoginPage] ..> [AuthController]
+[DashboardAluno] ..> [AlunoController]
+[DashboardProfessor] ..> [ProfessorController]
+[DashboardEmpresa] ..> [EmpresaController]
+[ExtratoView] ..> [TransacaoController]
+[TrocaMoedaView] ..> [VantagemController]
+[CadastroAlunoView] ..> [AlunoController]
 
-[AuthController] --> [Usuario]
-[AlunoController] --> [Aluno]
-[ProfessorController] --> [Professor]
-[EmpresaController] --> [Empresa]
-[VantagemController] --> [Vantagem]
-[TransacaoController] --> [Transacao]
-[TrocaMoedaView] --> [Cupom]
+' Conexões Controller -> Model
+[AuthController] ..> [Usuario]
+[AlunoController] ..> [Aluno]
+[AlunoController] ..> [Instituicao]
+[AlunoController] ..> [Cupom]
+[ProfessorController] ..> [Professor]
+[ProfessorController] ..> [Transacao]
+[EmpresaController] ..> [Empresa]
+[EmpresaController] ..> [Vantagem]
+[VantagemController] ..> [Vantagem]
+[TransacaoController] ..> [Transacao]
+[TransacaoController] ..> [Usuario]
 
+' Herança
 [Usuario] <|-- [Aluno]
 [Usuario] <|-- [Professor]
 [Usuario] <|-- [Empresa]
-
-[Aluno] --> [Instituicao]
-[Professor] --> [Instituicao]
-[Empresa] --> [Vantagem]
-[Aluno] --> [Transacao]
-[Professor] --> [Transacao]
-[Transacao] --> [Usuario]
-[Cupom] --> [Vantagem]
-[Aluno] --> [Cupom]
 
 @enduml
