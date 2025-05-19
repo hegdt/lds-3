@@ -50,10 +50,6 @@ class Vantagem {
   - empresa: Empresa
 }
 
-class Moeda {
-  - id: String
-  - valor: int = 1
-}
 
 class Transacao {
   - id: String
