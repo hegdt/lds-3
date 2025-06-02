@@ -30,13 +30,11 @@ export default function CreateVantagemModal({ handleClose, setEmpresa }) {
 	}
 
 	function submit({ descricao, custo, quantidade, foto }) {
-		// Validação adicional, embora react-hook-form deva pegar
 		if (parseFloat(custo) < 0 || parseInt(quantidade) < 0) {
 			alert("Custo e Quantidade não podem ser negativos.");
 			return;
 		}
 
-		// TODO fazer requisição post
 		var bodyFormData = new FormData();
 		bodyFormData.append("descricao", descricao);
 		bodyFormData.append("custoEmMoedas", custo);
@@ -130,7 +128,6 @@ export default function CreateVantagemModal({ handleClose, setEmpresa }) {
 									id={field.id}
 									name={field.id}
 									{...register(field.id, field.rules)}
-									// Adiciona props de erro para o Input do MUI
 									error={!!errors[field.id]}
 								/>
 								{errors[field.id] && (

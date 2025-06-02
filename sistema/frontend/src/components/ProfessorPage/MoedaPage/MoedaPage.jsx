@@ -30,10 +30,10 @@ const style = {
 
 export default function MoedaPage() {
   const [openModal, setOpenModal] = useState(false);
-  const [alunoParaConfirmacao, setAlunoParaConfirmacao] = useState(null); // Estado para o aluno buscado
-  const [isLoadingAluno, setIsLoadingAluno] = useState(false); // Estado para controlar o carregamento
-  const [errorAluno, setErrorAluno] = useState(""); // Estado para mensagens de erro ao buscar aluno
-  const { register, handleSubmit, getValues } = useForm(); // Adicionado getValues
+  const [alunoParaConfirmacao, setAlunoParaConfirmacao] = useState(null);
+  const [isLoadingAluno, setIsLoadingAluno] = useState(false); 
+  const [errorAluno, setErrorAluno] = useState(""); 
+  const { register, handleSubmit, getValues } = useForm();
 
   const handlePrepareAndOpenModal = async () => {
     const alunoId = getValues("alunoId");
@@ -50,7 +50,7 @@ export default function MoedaPage() {
 
     setIsLoadingAluno(true);
     setErrorAluno("");
-    setAlunoParaConfirmacao(null); // Limpa dados anteriores
+    setAlunoParaConfirmacao(null); 
 
     try {
       const response = await fetch(`http://localhost:8080/alunos/${alunoId}`);
@@ -60,22 +60,19 @@ export default function MoedaPage() {
           const errorData = await response.json();
           errorMessage = errorData.message || errorMessage;
         } catch (e) {
-          // Ignora erro ao parsear JSON do erro, usa mensagem padrão
         }
         setErrorAluno(errorMessage);
-        // alert(errorMessage); // Opcional: alertar aqui ou apenas mostrar no modal
-        setOpenModal(true); // Abre o modal mesmo com erro para mostrar a mensagem
+        setOpenModal(true); 
         return;
       }
       const alunoData = await response.json();
       setAlunoParaConfirmacao(alunoData);
-      setOpenModal(true); // Abre o modal APÓS buscar o aluno com sucesso
+      setOpenModal(true); 
     } catch (error) {
       console.error("Falha ao buscar aluno:", error);
       const networkErrorMessage = "Falha ao conectar com o servidor para buscar o aluno.";
       setErrorAluno(networkErrorMessage);
-      // alert(networkErrorMessage); // Opcional
-      setOpenModal(true); // Abre o modal para mostrar o erro de rede
+      setOpenModal(true); 
     } finally {
       setIsLoadingAluno(false);
     }
@@ -83,12 +80,8 @@ export default function MoedaPage() {
 
   const handleCloseModal = () => {
     setOpenModal(false);
-    // Opcional: resetar estados ao fechar, se preferir
-    // setAlunoParaConfirmacao(null);
-    // setErrorAluno("");
   };
 
-  // Função chamada pelo handleSubmit do botão "Enviar" DENTRO do modal
   const processarEnvioMoedas = (dataDoFormulario) => {
     if (!alunoParaConfirmacao || !alunoParaConfirmacao.id || errorAluno) {
       alert("Não é possível enviar moedas. Verifique os dados do aluno.");
@@ -104,7 +97,7 @@ export default function MoedaPage() {
           "http://localhost:8080/professores/enviarMoedas",
           {
             professorId: localStorage.getItem("idUser"),
-            alunoId: alunoParaConfirmacao.id, // Usa o ID do aluno confirmado
+            alunoId: alunoParaConfirmacao.id, 
             quantidade: quantidadeParaEnviar
           },
           {
@@ -165,7 +158,7 @@ export default function MoedaPage() {
             color="primary"
             variant="outlined"
             sx={{ marginTop: "10px" }}
-            onClick={handlePrepareAndOpenModal} // Alterado para buscar o aluno antes de abrir
+            onClick={handlePrepareAndOpenModal} 
             disabled={isLoadingAluno}
           >
             {isLoadingAluno ? <CircularProgress size={24} /> : "Enviar moedas"}
@@ -188,7 +181,7 @@ export default function MoedaPage() {
             id="keep-mounted-modal-description"
             variant="h4"
             component="h2"
-            sx={{ my: 2, color: errorAluno ? 'red' : 'inherit', minHeight: '3rem' }} // Espaço para nome ou erro
+            sx={{ my: 2, color: errorAluno ? 'red' : 'inherit', minHeight: '3rem' }} 
           >
             {isLoadingAluno && <CircularProgress size={30} />}
             {!isLoadingAluno && errorAluno && errorAluno}
@@ -209,9 +202,9 @@ export default function MoedaPage() {
           >
             <Button
               variant="contained"
-              onClick={handleSubmit(processarEnvioMoedas)} // Chama a função de envio final
+              onClick={handleSubmit(processarEnvioMoedas)} 
               color="primary"
-              disabled={isLoadingAluno || !!errorAluno || !alunoParaConfirmacao} // Desabilita se carregando, erro, ou sem aluno
+              disabled={isLoadingAluno || !!errorAluno || !alunoParaConfirmacao} 
             >
               Enviar
             </Button>
