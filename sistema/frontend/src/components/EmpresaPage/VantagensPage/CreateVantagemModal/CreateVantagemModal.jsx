@@ -7,13 +7,14 @@ import {
 	Input,
 	Button,
 	Box,
-	styled,
+	Typography,
+	styled
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 export default function CreateVantagemModal({ handleClose, setEmpresa }) {
-	const { register, handleSubmit } = useForm();
+	const { register, handleSubmit, formState: { errors } } = useForm();
 	const [cloathImage, setImage] = useState("");
 	const [showImg, setShowImg] = useState();
 
@@ -29,10 +30,12 @@ export default function CreateVantagemModal({ handleClose, setEmpresa }) {
 	}
 
 	function submit({ descricao, custo, quantidade, foto }) {
-		console.log(foto);
-		console.log(descricao);
-		console.log(custo);
-		console.log(quantidade);
+		// Validação adicional, embora react-hook-form deva pegar
+		if (parseFloat(custo) < 0 || parseInt(quantidade) < 0) {
+			alert("Custo e Quantidade não podem ser negativos.");
+			return;
+		}
+
 		// TODO fazer requisição post
 		var bodyFormData = new FormData();
 		bodyFormData.append("descricao", descricao);
@@ -54,8 +57,12 @@ export default function CreateVantagemModal({ handleClose, setEmpresa }) {
 					atualizaEmpresa();
 					handleClose();
 				} else {
-					alert("Não foi possivel criar a vantagem!");
+					const errorMessage = res.data?.message || "Não foi possível criar a vantagem!";
+					alert(errorMessage);
 				}
+			}).catch(err => {
+				const errorMessage = err.response?.data?.message || err.response?.data || "Erro ao criar vantagem. Verifique os dados.";
+				alert(errorMessage);
 			});
 		} catch (error) {
 			console.error(error.response.data);
@@ -63,9 +70,27 @@ export default function CreateVantagemModal({ handleClose, setEmpresa }) {
 	}
 
 	const labels = [
-		{ id: "descricao", label: "Descrição", type: "text" },
-		{ id: "custo", label: "Custo", type: "text" },
-		{ id: "quantidade", label: "Quantidade", type: "text" },
+		{ 
+			id: "descricao", 
+			label: "Descrição", 
+			type: "text", 
+			rules: { required: "Descrição é obrigatória" } 
+		},
+		{
+			id: "custo",
+			label: "Custo em Moedas",
+			type: "number",
+			rules: {
+				required: "Custo é obrigatório",
+				min: { value: 0, message: "Custo não pode ser negativo" },
+			},
+		},
+		{
+			id: "quantidade",
+			label: "Quantidade em Estoque",
+			type: "number",
+			rules: { required: "Quantidade é obrigatória", min: { value: 0, message: "Quantidade não pode ser negativa" } },
+		},
 	];
 
 	const handleImageChange = (e) => {
@@ -98,14 +123,21 @@ export default function CreateVantagemModal({ handleClose, setEmpresa }) {
 				<Box>
 					<FormGroup>
 						{labels.map((field) => (
-							<FormControl key={field.id} className='field-container'>
+							<FormControl key={field.id} className='field-container' sx={{ my: 1 }}>
 								<InputLabel htmlFor={field.id}>{field.label}</InputLabel>
 								<Input
 									type={field.type}
 									id={field.id}
 									name={field.id}
-									{...register(field.id)}
+									{...register(field.id, field.rules)}
+									// Adiciona props de erro para o Input do MUI
+									error={!!errors[field.id]}
 								/>
+								{errors[field.id] && (
+									<Typography variant="caption" color="error" sx={{ mt: 0.5 }}>
+										{errors[field.id].message}
+									</Typography>
+								)}								
 							</FormControl>
 						))}
 						<Button
