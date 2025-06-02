@@ -20,12 +20,6 @@ public class Transacao {
     private String mensagem;
 
     @ManyToOne
-    private Professor professor;
-
-    @ManyToOne
-    private Aluno aluno;
-
-    @ManyToOne
     @JsonIgnore
     private Extrato extrato;
 }

@@ -60,13 +60,4 @@ public class ExtratoService {
         }
     }
 
-public void criarRegistro(Transacao transacao) {
-    Extrato extrato = new Extrato();
-    extrato.setData(transacao.getData());
-    extrato.setDescricao("Recebido " + transacao.getQuantidade() + " moedas de " + transacao.getProfessor().getNome());
-    extrato.setPessoa(transacao.getAluno());
-    extrato.setTransacao(transacao);
-
-    extratoRepository.save(extrato);
-}
 }
