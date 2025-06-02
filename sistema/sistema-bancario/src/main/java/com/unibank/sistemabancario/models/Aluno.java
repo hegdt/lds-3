@@ -38,4 +38,7 @@ public class Aluno extends Pessoa {
 
     public Aluno() {
     }
+
+    @OneToOne(mappedBy = "pessoa", cascade = CascadeType.ALL)
+    private Extrato extrato;
 }

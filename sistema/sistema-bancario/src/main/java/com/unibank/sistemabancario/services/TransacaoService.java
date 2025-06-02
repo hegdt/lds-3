@@ -29,28 +29,39 @@ public class TransacaoService {
         this.extratoService = extratoService;
     }
 
-    @Transactional
-    public void realizarTransacao(Long professorId, Long alunoId, int quantidade, String mensagem) {
-        Professor professor = professorRepository.findById(professorId)
-                .orElseThrow(() -> new RuntimeException("Professor não encontrado"));
-        
-        Aluno aluno = alunoRepository.findById(alunoId)
-                .orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
+@Transactional
+public void realizarTransacao(Long professorId, Long alunoId, int quantidade, String mensagem) {
+    Professor professor = professorRepository.findById(professorId)
+        .orElseThrow(() -> new RuntimeException("Professor não encontrado"));
 
-        if (professor.getSaldoDeMoedas() < quantidade) {
-            throw new RuntimeException("Saldo insuficiente");
-        }
-        
-        professor.setSaldoDeMoedas(professor.getSaldoDeMoedas() - quantidade);
-        aluno.setSaldoDeMoedas(aluno.getSaldoDeMoedas() + quantidade);
-        professorRepository.save(professor);
-        alunoRepository.save(aluno);
-        
-        extratoService.updateExtrato(criarTransacao(-quantidade, "Envio de moedas para aluno " + alunoId, professor.getExtrato()));
+    Aluno aluno = alunoRepository.findById(alunoId)
+        .orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
 
-        extratoService.updateExtrato(criarTransacao(quantidade, mensagem, aluno.getExtrato()));
-    
+    if (quantidade <= 0) {
+        throw new RuntimeException("Quantidade inválida");
     }
+
+    if (professor.getSaldoDeMoedas() < quantidade) {
+        throw new RuntimeException("Saldo insuficiente");
+    }
+
+    professor.setSaldoDeMoedas(professor.getSaldoDeMoedas() - quantidade);
+    aluno.setSaldoDeMoedas(aluno.getSaldoDeMoedas() + quantidade);
+
+    Transacao transacao = new Transacao();
+    transacao.setProfessor(professor);
+    transacao.setAluno(aluno);
+    transacao.setQuantidade(quantidade);
+    transacao.setMensagem(mensagem);
+    transacao.setData(LocalDate.now());
+
+    transacaoRepository.save(transacao);
+    professorRepository.save(professor);
+    alunoRepository.save(aluno);
+
+    extratoService.criarRegistro(transacao);
+}
+
 
 
     private Transacao criarTransacao(int quantidade, String mensagem, Extrato extrato) {
