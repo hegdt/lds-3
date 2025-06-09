@@ -9,8 +9,14 @@ package "OperacoesUsuario" {
   [AuthController]
   [UsuarioController]
   [AlunoController]
+  [AlunoService]
+  [AlunoRepository]
   [ProfessorController]
+  [ProfessorService]
+  [ProfessorRepository]
   [EmpresaController]
+  [EmpresaService]
+  [EmpresaRepository]
   [Usuario]
   [Aluno]
   [Professor]
@@ -22,13 +28,17 @@ package "OperacoesFinanceiras" {
   [ExtratoView]
   [TrocaMoedaView]
   [VantagemController]
+  [VantagemService]
+  [VantagemRepository]
   [TransacaoController]
+  [TransacaoService]
+  [TransacaoRepository]
   [Vantagem]
   [Transacao]
   [Cupom]
 }
 
-' Conexões View -> Controller
+' View -> Controller
 [LoginView] ..> [AuthController]
 [DashboardAlunoView] ..> [AlunoController]
 [DashboardProfessorView] ..> [ProfessorController]
@@ -37,19 +47,33 @@ package "OperacoesFinanceiras" {
 [TrocaMoedaView] ..> [VantagemController]
 [CadastroView] ..> [UsuarioController]
 
-' Conexões Controller -> Model
+' Controller -> Service
 [AuthController] ..> [Usuario]
 [UsuarioController] ..> [Usuario]
-[AlunoController] ..> [Aluno]
-[AlunoController] ..> [Instituicao]
-[AlunoController] ..> [Cupom]
-[ProfessorController] ..> [Professor]
-[ProfessorController] ..> [Transacao]
-[EmpresaController] ..> [Empresa]
-[EmpresaController] ..> [Vantagem]
-[VantagemController] ..> [Vantagem]
-[TransacaoController] ..> [Transacao]
-[TransacaoController] ..> [Usuario]
+[AlunoController] ..> [AlunoService]
+[ProfessorController] ..> [ProfessorService]
+[EmpresaController] ..> [EmpresaService]
+[VantagemController] ..> [VantagemService]
+[TransacaoController] ..> [TransacaoService]
+
+' Service -> Repository
+[AlunoService] ..> [AlunoRepository]
+[ProfessorService] ..> [ProfessorRepository]
+[EmpresaService] ..> [EmpresaRepository]
+[VantagemService] ..> [VantagemRepository]
+[TransacaoService] ..> [TransacaoRepository]
+
+' Repository -> Model
+[AlunoRepository] ..> [Aluno]
+[AlunoRepository] ..> [Instituicao]
+[AlunoRepository] ..> [Cupom]
+[ProfessorRepository] ..> [Professor]
+[ProfessorRepository] ..> [Transacao]
+[EmpresaRepository] ..> [Empresa]
+[EmpresaRepository] ..> [Vantagem]
+[VantagemRepository] ..> [Vantagem]
+[TransacaoRepository] ..> [Transacao]
+[TransacaoRepository] ..> [Usuario]
 
 ' Herança
 [Usuario] <|-- [Aluno]
