@@ -42,7 +42,7 @@ public class ProfessorController {
     @PostMapping("/enviarMoedas")
     public ResponseEntity<?> enviarMoedas(@RequestBody EnviarMoedasDTO enviarMoedasDTO) {
         try {
-            professorService.enviarMoedas(enviarMoedasDTO.getProfessorId(), enviarMoedasDTO.getAlunoId(),enviarMoedasDTO.getQuantidade());
+            professorService.enviarMoedas(enviarMoedasDTO.getProfessorId(), enviarMoedasDTO.getAlunoId(),enviarMoedasDTO.getQuantidade(), enviarMoedasDTO.getMensagem());
             return ResponseEntity.ok().body("Moedas enviadas com sucesso.");
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

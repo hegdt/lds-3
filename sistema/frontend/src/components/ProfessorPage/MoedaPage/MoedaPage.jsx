@@ -38,9 +38,18 @@ export default function MoedaPage() {
   const handlePrepareAndOpenModal = async () => {
     const alunoId = getValues("alunoId");
     const quantidade = getValues("quantidade");
+    const mensagem = getValues("mensagem");
 
-    if (!alunoId || !quantidade) {
-      alert("Por favor, preencha o ID do Aluno e a Quantidade.");
+    if (!alunoId) {
+      alert("Por favor, preencha o ID do Aluno.");
+      return;
+    }
+    if (!quantidade) {
+      alert("Por favor, preencha a quantidade.");
+      return;
+    }
+    if (!mensagem) {
+      alert("Por favor, preencha a mensagem.");
       return;
     }
     if (isNaN(parseFloat(quantidade)) || parseFloat(quantidade) <= 0) {
@@ -89,7 +98,14 @@ export default function MoedaPage() {
       return;
     }
 
-    const quantidadeParaEnviar = dataDoFormulario.quantidade;
+    const quantidadeParaEnviar = dataDoFormulario.quantidade
+
+    const mensagem = dataDoFormulario.mensagem;
+
+    if(!mensagem){
+      alert("Por favor, preencha a mensagem.");
+      return;
+    }
 
     try {
       axios
@@ -98,7 +114,8 @@ export default function MoedaPage() {
           {
             professorId: localStorage.getItem("idUser"),
             alunoId: alunoParaConfirmacao.id, 
-            quantidade: quantidadeParaEnviar
+            quantidade: quantidadeParaEnviar,
+            mensagem: mensagem,
           },
           {
             headers: { "Content-Type": "application/json" },
@@ -126,6 +143,7 @@ export default function MoedaPage() {
   const labels = [
     { id: "alunoId", label: "ID do Aluno", type: "text", rules: { required: "ID do Aluno é obrigatório" } },
     { id: "quantidade", label: "Quantidade de Moedas", type: "number", rules: { required: "Quantidade é obrigatória", min: { value: 1, message: "Quantidade deve ser maior que 0" } } },
+    { id: "mensagem", label: "Mensagem", type: "text", rules: { required: "Mensagem é obrigatória" } },
   ];
 
   return (

@@ -72,7 +72,7 @@ public class ProfessorService {
     }
 
     @Transactional
-    public void enviarMoedas(Long professorId, Long alunoId, int quantidade) {
+    public void enviarMoedas(Long professorId, Long alunoId, int quantidade, String mensagem) {
         Professor professor = professorRepository.findById(professorId)
                 .orElseThrow(() -> new RuntimeException("Professor não encontrado"));
         
@@ -80,8 +80,8 @@ public class ProfessorService {
             professor.setSaldoDeMoedas(professor.getSaldoDeMoedas() - quantidade);
             professorRepository.save(professor);
 
-            alunoService.receberMoedas(alunoId, quantidade, "Recebimento de moedas de professor");
-            pessoaService.registrarTransacao(professor, -quantidade, "Envio de moedas para aluno");
+            alunoService.receberMoedas(alunoId, quantidade, mensagem);
+            pessoaService.registrarTransacao(professor, -quantidade, mensagem);
         } else {
             throw new RuntimeException("Saldo insuficiente");
         }

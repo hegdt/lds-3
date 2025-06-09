@@ -10,5 +10,6 @@ public class EnviarMoedasDTO {
     private Long professorId;
     private Long alunoId;
     private int quantidade;
+    private String mensagem;
     
 }
