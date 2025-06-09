@@ -33,6 +33,12 @@ package "Sistema de Moeda Estudantil" {
 
 Usuario --> UC_Login
 Usuario --> UC_CadUsuario
+
+' Herança entre atores
+Usuario <|-- Aluno
+Usuario <|-- Professor
+Usuario <|-- Empresa
+
 Aluno --> UC_CadAluno
 Aluno --> UC_UpdAluno
 Aluno --> UC_Extrato
