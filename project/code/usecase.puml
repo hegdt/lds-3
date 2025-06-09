@@ -17,39 +17,35 @@ actor Empresa
 package "Sistema de Moeda Estudantil" {
 
   usecase "Fazer login" as UC_Login
-  usecase "Fazer cadastro" as UC_CadAluno
+  usecase "Fazer cadastro" as UC_CadUsuario
+  usecase "Cadastrar Aluno" as UC_CadAluno
+  usecase "Atualizar Aluno" as UC_UpdAluno
+  usecase "Cadastrar Empresa Parceira" as UC_CadEmpresa
+  usecase "Atualizar Empresa Parceira" as UC_UpdEmpresa
   usecase "Visualizar extrato de moedas" as UC_Extrato
   usecase "Trocar moedas por vantagens" as UC_TrocaMoedas
   usecase "Receber cupom por email com código" as UC_EmailCupom
   usecase "Notificar Aluno" as UC_ReceberMoedas
-
   usecase "Distribuir moedas aos alunos" as UC_DistribuirMoedas
   usecase "Cadastrar vantagens" as UC_CadVantagem
   usecase "Receber email de confirmação com código" as UC_ConfirmacaoParceiro
 }
 
-Usuario <|-- Aluno
-Usuario <|-- Professor
-Usuario <|-- Empresa
-
 Usuario --> UC_Login
-Usuario --> UC_CadAluno
-
-' Casos de uso do Aluno
-
+Usuario --> UC_CadUsuario
+Aluno --> UC_CadAluno
+Aluno --> UC_UpdAluno
 Aluno --> UC_Extrato
 Aluno --> UC_TrocaMoedas
 
-' Casos de uso do Professor
 Professor --> UC_DistribuirMoedas
 Professor --> UC_Extrato
 
-' Casos de uso da Empresa
+Empresa --> UC_CadEmpresa
+Empresa --> UC_UpdEmpresa
 Empresa --> UC_CadVantagem
 Empresa --> UC_ConfirmacaoParceiro
 
-
-' Relações include
 UC_TrocaMoedas --> UC_EmailCupom : <<include>>
 UC_DistribuirMoedas --> UC_ReceberMoedas : <<include>>
 
