@@ -8,6 +8,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.unibank.sistemabancario.models.Aluno;
 import com.unibank.sistemabancario.models.Cupom;
@@ -27,13 +28,15 @@ public class AlunoService {
     private final CupomRepository cupomRepository;
     private final PessoaService pessoaService;
     private final ExtratoRepository extratoRepository;
+    private final EmailService emailService;
 
-    public AlunoService(AlunoRepository alunoRepository, VantagemRepository vantagemRepository, CupomRepository cupomRepository, ExtratoRepository extratoRepository, PessoaService pessoaService){
+    public AlunoService(AlunoRepository alunoRepository, VantagemRepository vantagemRepository, CupomRepository cupomRepository, ExtratoRepository extratoRepository, PessoaService pessoaService, EmailService emailService){
         this.alunoRepository = alunoRepository;
         this.vantagemRepository = vantagemRepository;
         this.cupomRepository = cupomRepository;
         this.extratoRepository = extratoRepository;
         this.pessoaService = pessoaService;
+        this.emailService = emailService;
     }
 
     public List<Aluno> findAll() {
@@ -114,6 +117,19 @@ public class AlunoService {
         cupomRepository.save(cupom);
         alunoRepository.save(aluno);
 
+        String emailAluno = aluno.getEmail();
+        String mensagemAluno = "Você resgatou a vantagem: " + vantagem.getDescricao() +
+            "\nCódigo do cupom: " + cupom.getCodigo() +
+            "\nApresente este código para utilizar sua vantagem.";
+
+        emailService.enviarEmail(emailAluno, "Resgate de Vantagem", mensagemAluno);
+
+        String emailEmpresa = vantagem.getEmpresa().getEmail();
+        String mensagemEmpresa = "Um aluno resgatou a vantagem: " + vantagem.getDescricao() +
+            "\nCódigo do cupom: " + cupom.getCodigo() +
+            "\nVerifique este código na troca presencial.";
+
+        emailService.enviarEmail(emailEmpresa, "Resgate de Vantagem por Aluno", mensagemEmpresa);
 
         return resgateDeVantagemDTO;
     }

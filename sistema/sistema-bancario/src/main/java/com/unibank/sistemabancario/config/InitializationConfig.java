@@ -45,7 +45,7 @@ public class InitializationConfig {
     private List<Professor> lerProfessoresDaInstituicao(long numeroInstituicao) {
         try {
             // Precisa ajustar o camminho para o caminho absoluto funcionar corretamente
-            File file = new File("sistema/sistema-bancario/src/main/resources/professores/professores" + numeroInstituicao + ".json");
+            File file = new File("C:/dev/lds-3/sistema/sistema-bancario/src/main/resources/professores/professores" + numeroInstituicao + ".json");
             ObjectMapper mapper = new ObjectMapper();
             return Arrays.asList(mapper.readValue(file, Professor[].class));
 
