@@ -2,6 +2,9 @@ package com.unibank.sistemabancario.services;
 
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import com.unibank.sistemabancario.models.Vantagem;
@@ -23,16 +26,35 @@ public class VantagemService {
         return vantagemRepository.findAll();
     }
 
-    public Vantagem findById(Long id) {
-        return vantagemRepository.findById(id).orElse(null);
+    @Transactional
+    public Vantagem buscarVantagemPorId(Long id) {
+        return vantagemRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Vantagem não encontrada com ID: " + id));
     }
 
-    public Vantagem save(Vantagem vantagem) {
+    @Transactional
+    public Vantagem salvarVantagem(Vantagem vantagem) {
+        validarVantagem(vantagem);
         return vantagemRepository.save(vantagem);
     }
 
-    public void delete(Long id) {
-        vantagemRepository.deleteById(id);
+    @Transactional
+    public void deletarVantagem(Long id) {
+        Vantagem vantagem = buscarVantagemPorId(id);
+        vantagemRepository.delete(vantagem);
     }
 
+    private void validarVantagem(Vantagem vantagem) {
+        if (vantagem.getDescricao() == null || vantagem.getDescricao().isBlank()) {
+            throw new IllegalArgumentException("Descrição da vantagem não pode estar vazia");
+        }
+
+        if (vantagem.getCustoEmMoedas() <= 0) {
+            throw new IllegalArgumentException("O custo em moedas deve ser maior que zero");
+        }
+
+        if (vantagem.getQuantidade() < 0) {
+            throw new IllegalArgumentException("Quantidade da vantagem não pode ser negativa");
+        }
+    }
 }
